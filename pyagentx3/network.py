@@ -39,7 +39,7 @@ class Network(threading.Thread):
         self.socket = None
 
     def _connect(self):
-        while True:
+        while not self.stop.is_set():
             try:
                 logger.info("Try to open socket on ({})".format(self._socket_path))
                 self.socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -119,7 +119,7 @@ class Network(threading.Thread):
     # =========================================
 
     def _get_updates(self):
-        while True:
+        while not self.stop.is_set():
             try:
                 item = self._queue.get_nowait()
                 #logger.info('Update: {}'.format(item))
@@ -219,7 +219,7 @@ class Network(threading.Thread):
             pdu = self.recv_pdu()
 
         logger.info("==== Waiting for PDU ====")
-        while True:
+        while not self.stop.is_set():
             try:
                 self._get_updates()
                 request = self.recv_pdu()
