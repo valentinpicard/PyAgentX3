@@ -38,7 +38,7 @@ class Updater(threading.Thread):
 
     def run(self):
         start_time = 0
-        while self.stop.is_set():
+        while not self.stop.is_set():
             now = time.time()
             if now - start_time > self._freq:
                 logger.info('Updating : %s (%s)', self.__class__.__name__, self._oid)
